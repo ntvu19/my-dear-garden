@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { Airplane } from "./js/object/Airplane.js";
 import { SmallStone, MediumStone } from "./js/object/Stone.js";
+import { Fence } from "./js/object/Fence.js";
 import { OrbitControls } from "./js/OrbitControls.js";
 
 // RENDERER
@@ -44,14 +45,16 @@ const control = new OrbitControls(camera, renderer.domElement);
 // scene.add(airplane.mesh);
 
 // 2. SmallStone and MediumStone
-var smallStone = new SmallStone();
-smallStone.position.set(5, 5, 0);
-scene.add(smallStone);
+// var smallStone = new SmallStone();
+// smallStone.position.set(5, 5, 0);
+// scene.add(smallStone);
 
-var mediumStone = new MediumStone();
-scene.add(mediumStone);
+// var mediumStone = new MediumStone();
+// scene.add(mediumStone);
 
-// 3.
+// 3. Fence
+var fence = new Fence();
+scene.add(fence);
 
 // EVENT (Keyboard, mouse, etc.)
 
