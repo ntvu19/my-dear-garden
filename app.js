@@ -126,7 +126,9 @@ scene.add(house.mesh);
 
 //6. Fence
 var fence = new Fence();
-scene.add(fence);
+fence.mesh.scale.set(10, 10, 10);
+fence.mesh.position.set(-50, 0, 0);
+scene.add(fence.mesh);
 
 
 

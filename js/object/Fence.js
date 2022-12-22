@@ -3,13 +3,13 @@ import { Colors } from "../variables/Color.js";
 
 var Fence = function () {
   //
+  this.mesh = new THREE.Object3D();
   var matBrown = new THREE.MeshLambertMaterial({ color: 0xa3785f });
-  var fence = new THREE.Group();
   var wood = [];
   var geomWood = new THREE.BoxGeometry(1, 1, 1);
   for (var i = 0; i < 4; i++) {
     wood[i] = new THREE.Mesh(geomWood, matBrown);
-    fence.add(wood[i]);
+    this.mesh.add(wood[i]);
     wood[i].castShadow = true;
     wood[i].receiveShadow = true;
   }
@@ -28,10 +28,9 @@ var Fence = function () {
   wood[2].rotation.x = -3.14 / 32;
   wood[2].rotation.y = 3.14 / 32;
 
-  fence.position.set(3, 0, 2);
-  fence.rotation.y = 3.14 / 5;
+  this.mesh.position.set(3, 0, 2);
+  this.mesh.rotation.y = 3.14 / 5;
 
-  return fence;
 };
 
 export { Fence };
