@@ -111,7 +111,7 @@ for (var i = 0; i < 5; i++)
   Tree.mesh.scale.set(20, 20, 20);
   Tree.mesh.position.x = Math.random() * (100 - -100) - 100;
   Tree.mesh.position.z = Math.random() * (100 - -100) - 100;
-  Tree.mesh.position.y = 0;
+  Tree.mesh.position.y = 5;
   scene.add(Tree.mesh);
 }
 
