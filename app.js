@@ -1,5 +1,7 @@
 import * as THREE from "three";
 import { Airplane } from "./js/object/Airplane.js";
+import { SmallStone, MediumStone } from "./js/object/Stone.js";
+import { OrbitControls } from "./js/OrbitControls.js";
 
 // RENDERER
 const canvas = document.querySelector("#c");
@@ -22,6 +24,8 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 camera.position.set(0, 100, 200);
 camera.lookAt(0, 0, 0);
 
+const control = new OrbitControls(camera, renderer.domElement);
+
 // LIGHT
 {
   const color = 0xffffff;
@@ -33,13 +37,21 @@ camera.lookAt(0, 0, 0);
 
 // DRAW
 // 1. Airplane
-var airplane = new Airplane();
-airplane.mesh.scale.set(0.25, 0.25, 0.25);
-airplane.mesh.position.set(0, 0, 0);
-airplane.mesh.rotateY(Math.PI / 4); // 45 degrees
-scene.add(airplane.mesh);
+// var airplane = new Airplane();
+// airplane.mesh.scale.set(0.25, 0.25, 0.25);
+// airplane.mesh.position.set(0, 0, 0);
+// airplane.mesh.rotateY(Math.PI / 4); // 45 degrees
+// scene.add(airplane.mesh);
 
-// 2.
+// 2. SmallStone and MediumStone
+var smallStone = new SmallStone();
+smallStone.position.set(5, 5, 0);
+scene.add(smallStone);
+
+var mediumStone = new MediumStone();
+scene.add(mediumStone);
+
+// 3.
 
 // EVENT (Keyboard, mouse, etc.)
 
@@ -48,7 +60,7 @@ function render(time) {
   time *= 0.001;
 
   // Rotate the propeller
-  airplane.propeller.rotation.x += 0.3;
+  // airplane.propeller.rotation.x += 0.3;
 
   // Render camera
   renderer.render(scene, camera);
