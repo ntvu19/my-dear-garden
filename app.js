@@ -20,9 +20,9 @@ const textureLoader = new THREE.TextureLoader();
 
 // SCENE
 const scene = new THREE.Scene();
-// textureLoader.load("./assets/sky.jpg", function (texture) {
-//   scene.background = texture;
-// });
+textureLoader.load("./assets/sky.jpg", function (texture) {
+  scene.background = texture;
+});
 
 // CAMERA
 const fov = 60;
@@ -42,7 +42,11 @@ const color = 0xffffff;
 const light = new THREE.SpotLight(color, 1);
 light.castShadow = true;
 light.position.set(0, 300, 200);
-// scene.add(light);
+scene.add(light);
+
+const light2 = new THREE.DirectionalLight(color, 0.5);
+light2.position.set(0, 300, 200);
+scene.add(light2);
 
 // DRAW
 
@@ -168,7 +172,7 @@ const pointLight1 = new THREE.PointLight(0xffff99, 1.5);
 pointLight1.castShadow = true;
 pointLight1.position.set(-150, 70, 150);
 pointLight1.distance = 300;
-scene.add(pointLight1);
+// scene.add(pointLight1);
 
 var streetLamp2 = new StreetLamp();
 streetLamp2.then((obj) => {
@@ -181,7 +185,7 @@ const pointLight2 = new THREE.PointLight(0xffff99, 1.5);
 pointLight2.castShadow = true;
 pointLight2.position.set(150, 70, -150);
 pointLight2.distance = 300;
-scene.add(pointLight2);
+// scene.add(pointLight2);
 
 var streetLamp3 = new StreetLamp();
 streetLamp3.then((obj) => {
@@ -194,7 +198,7 @@ const pointLight3 = new THREE.PointLight(0xffff99, 1.5);
 pointLight3.castShadow = true;
 pointLight3.position.set(150, 70, 150);
 pointLight3.distance = 300;
-scene.add(pointLight3);
+// scene.add(pointLight3);
 
 var streetLamp4 = new StreetLamp();
 streetLamp4.then((obj) => {
@@ -207,7 +211,7 @@ const pointLight4 = new THREE.PointLight(0xffff99, 1.5);
 pointLight4.castShadow = true;
 pointLight4.position.set(-150, 70, -150);
 pointLight4.distance = 300;
-scene.add(pointLight4);
+// scene.add(pointLight4);
 
 // 8. Cactus
 var cactus = new Cactus();
