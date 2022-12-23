@@ -1,17 +1,17 @@
 import { OBJLoader } from "../OBJLoader.js";
 import { MTLLoader } from "../MTLLoader.js";
 
-var Grass = function () {
+var Tree = function () {
   return new Promise(function (resolve, reject) {
     const mtlLoader = new MTLLoader();
-    mtlLoader.load("../../assets/Grass/grass.mtl", (mtl) => {
+    mtlLoader.load("../../assets/Tree/tree.mtl", (mtl) => {
       mtl.preload();
 
       const objLoader = new OBJLoader();
       objLoader.setMaterials(mtl);
-      objLoader.load("../../assets/Grass/grass.obj", resolve);
+      objLoader.load("../../assets/Tree/tree.obj", resolve);
     });
   });
 };
 
-export { Grass };
+export { Tree };
