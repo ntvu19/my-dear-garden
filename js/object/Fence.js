@@ -20,17 +20,13 @@ var Fence = function () {
 
   wood[0].position.set(0, 1.2, -1);
   wood[1].position.set(0, 1, 1);
-  // wood[2].position.set(.12,1.5,0);
+  wood[2].position.set(0.12, 1.5, 0);
   wood[2].position.set(0, 1.5, 0);
   wood[3].position.set(0.12, 0.9, 0);
 
   wood[3].rotation.x = 3.14 / 32;
   wood[2].rotation.x = -3.14 / 32;
   wood[2].rotation.y = 3.14 / 32;
-
-  this.mesh.position.set(3, 0, 2);
-  this.mesh.rotation.y = 3.14 / 5;
-
 };
 
 export { Fence };
