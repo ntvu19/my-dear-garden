@@ -2,15 +2,15 @@ import { Mesh } from "three";
 import { OBJLoader } from "../OBJLoader.js";
 import { MTLLoader } from "../MTLLoader.js";
 
-var House = function () {
+var Cactus = function () {
   return new Promise(function (resolve, reject) {
     const mtlLoader = new MTLLoader();
-    mtlLoader.load("../../assets/House/house.mtl", (mtl) => {
+    mtlLoader.load("../../assets/Cactus/cactus.mtl", (mtl) => {
       mtl.preload();
 
       const objLoader = new OBJLoader();
       objLoader.setMaterials(mtl);
-      objLoader.load("../../assets/House/house.obj", (root) => {
+      objLoader.load("../../assets/Cactus/cactus.obj", (root) => {
         root.traverse(function (child) {
           if (child instanceof Mesh) {
             child.castShadow = true;
@@ -22,4 +22,4 @@ var House = function () {
   });
 };
 
-export { House };
+export { Cactus };

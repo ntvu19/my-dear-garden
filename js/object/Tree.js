@@ -1,3 +1,4 @@
+import { Mesh } from "three";
 import { OBJLoader } from "../OBJLoader.js";
 import { MTLLoader } from "../MTLLoader.js";
 
@@ -9,7 +10,14 @@ var Tree = function () {
 
       const objLoader = new OBJLoader();
       objLoader.setMaterials(mtl);
-      objLoader.load("../../assets/Tree/tree.obj", resolve);
+      objLoader.load("../../assets/Tree/tree.obj", (root) => {
+        root.traverse(function (child) {
+          if (child instanceof Mesh) {
+            child.castShadow = true;
+          }
+        });
+        resolve(root);
+      });
     });
   });
 };
