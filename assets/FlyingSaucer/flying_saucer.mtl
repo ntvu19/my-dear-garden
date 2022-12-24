@@ -1,0 +1,12 @@
+newmtl Metal blue_7ff64a7d-3aef-4f0e-a0d4-24d0006a309a
+Kd 1.000 1.000 1.000
+d 1.000
+newmtl Metal_a287cce2-c3a9-4cba-9941-55de4a4278be
+Kd 0.904 0.135 0.066
+d 1.000
+newmtl Glass_7c4e1d04-2812-4bfa-9976-84e41173ceb2
+Kd 0.000 0.000 0.000
+d 1.000
+newmtl Metal 1_4ebd8baf-7331-40ce-9670-322289fe00d2
+Kd 0.072 0.072 0.072
+d 1.000
