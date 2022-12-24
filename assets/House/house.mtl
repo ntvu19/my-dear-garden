@@ -1,12 +1,12 @@
-newmtl Main building_d96a5f68-2a7d-4910-90b5-2fa50a16562b
-Kd 0.251 0.808 0.482
+newmtl Main building_8947bd15-2ac7-4221-9c27-0f225febdffe
+Kd 0.992 0.867 0.902
 d 1.000
-newmtl Roof_2d6a8a3f-1ffb-4db1-b4ac-75e00f32be49
+newmtl Roof_2bfd836c-bc41-49db-96eb-13f45fe09f91
 Kd 0.976 0.329 0.439
 d 1.000
-newmtl White material_395014c2-7fd6-4465-aa60-828dead58b16
+newmtl White material_d7f81ef9-b013-4df9-bd6e-f2614fc737eb
 Kd 1.000 1.000 1.000
 d 1.000
-newmtl Window glass_78b9f4c9-3b5f-4072-867f-ba3710d751f9
+newmtl Window glass_d74ec462-dd1a-4139-a389-7e1366556134
 Kd 0.243 0.247 0.318
 d 1.000

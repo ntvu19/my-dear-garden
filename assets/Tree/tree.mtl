@@ -1,6 +1,6 @@
-newmtl Color 5_693993a4-16af-4d45-b6d9-7be9cd0d431d
-Kd 0.243 0.580 0.000
+newmtl Material 1_34766e91-aa4e-4a41-8c81-96fa530a2cc8
+Kd 0.251 0.808 0.482
 d 1.000
-newmtl Color 2_89fa9bf9-04e0-4c1f-a8d7-79e498ba4f16
-Kd 0.333 0.145 0.067
+newmtl Material 2_819f3877-2a61-4fcd-9116-7e579c32e3ac
+Kd 0.243 0.247 0.318
 d 1.000

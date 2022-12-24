@@ -1,15 +1,14 @@
 import * as THREE from "three";
 import { Road } from "./js/object/Road.js";
-import { SmallStone, MediumStone } from "./js/object/Stone.js";
 import { Fence } from "./js/object/Fence.js";
 import { OrbitControls } from "./js/OrbitControls.js";
 import { Car } from "./js/object/Car.js";
-import { BigTree } from "./js/object/BigTree.js";
 import { House } from "./js/object/House.js";
 import { Cactus } from "./js/object/Cactus.js";
 import { StreetLamp } from "./js/object/StreetLamp.js";
 import { Tree } from "./js/object/Tree.js";
-import { Grass } from "./js/object/Grass.js";
+import { FlyingSaucer } from "./js/object/FlyingSaucer.js";
+import { PalmTree1, PalmTree2 } from "./js/object/PalmTree.js";
 
 // RENDERER
 const canvas = document.querySelector("#c");
@@ -96,21 +95,19 @@ const headlights = new THREE.SpotLight(0xffffcc, 10, 100, 50);
 headlights.castShadow = true;
 headlights.position.set(-200, 4, 200);
 headlights.target = lightTarget;
-scene.add(headlights);
+// scene.add(headlights);
 
 // 3. Tree
 var tree = new Tree();
 tree.then((obj) => {
   obj.castShadow = true;
   obj.receiveShadow = true;
-  obj.scale.set(0.2, 0.2, 0.2);
+  obj.scale.set(0.8, 0.8, 0.8);
   obj.position.set(-80, 0, 50);
   scene.add(obj);
 });
 
-//4. Stone
-
-//5. House
+//4. House
 var house = new House();
 house.then((obj) => {
   obj.castShadow = true;
@@ -118,7 +115,7 @@ house.then((obj) => {
   scene.add(obj);
 });
 
-//6. Fence
+//5. Fence
 // Left
 for (let i = 0; i < 10; i++) {
   let fence = new Fence();
@@ -156,62 +153,34 @@ for (let i = 0; i < 10; i++) {
   scene.add(fence.mesh);
 }
 
-// 7. StreetLamp
-var streetLamp1 = new StreetLamp();
-streetLamp1.then((obj) => {
-  obj.castShadow = true;
-  obj.receiveShadow = true;
-  obj.scale.set(0.2, 0.2, 0.2);
-  obj.position.set(-160, 0, 160);
-  scene.add(obj);
+// 6. StreetLamp
+var streetLampTemp = [
+  [-1, 1],
+  [1, -1],
+  [1, 1],
+  [-1, -1],
+];
+var streetLampLight = [];
+
+streetLampTemp.forEach((el) => {
+  let streetLamp = new StreetLamp();
+  streetLamp.then((obj) => {
+    obj.castShadow = true;
+    obj.scale.set(0.2, 0.2, 0.2);
+    obj.position.set(160 * el[0], 0, 160 * el[1]);
+    scene.add(obj);
+  });
 });
 
-// const streetLamp1Light = new THREE.PointLight(0xffff99, 1.5);
-// streetLamp1Light.castShadow = true;
-// streetLamp1Light.position.set(-150, 70, 150);
-// streetLamp1Light.distance = 300;
-// scene.add(streetLamp1Light);
-
-var streetLamp2 = new StreetLamp();
-streetLamp2.then((obj) => {
-  obj.scale.set(0.2, 0.2, 0.2);
-  obj.position.set(160, 0, -160);
-  scene.add(obj);
+streetLampTemp.forEach((el) => {
+  let _streetLampLight = new THREE.PointLight(0xffff99, 1.5);
+  _streetLampLight.castShadow = true;
+  _streetLampLight.position.set(150 * el[0], 70, 150 * el[1]);
+  _streetLampLight.distance = 300;
+  streetLampLight.push(_streetLampLight);
 });
 
-// const streetLamp2Light = new THREE.PointLight(0xffff99, 1.5);
-// streetLamp2Light.castShadow = true;
-// streetLamp2Light.position.set(150, 70, -150);
-// streetLamp2Light.distance = 300;
-// scene.add(streetLamp2Light);
-
-var streetLamp3 = new StreetLamp();
-streetLamp3.then((obj) => {
-  obj.scale.set(0.2, 0.2, 0.2);
-  obj.position.set(160, 0, 160);
-  scene.add(obj);
-});
-
-// const streetLamp3Light = new THREE.PointLight(0xffff99, 1.5);
-// streetLamp3Light.castShadow = true;
-// streetLamp3Light.position.set(150, 70, 150);
-// streetLamp3Light.distance = 300;
-// scene.add(streetLamp3Light);
-
-var streetLamp4 = new StreetLamp();
-streetLamp4.then((obj) => {
-  obj.scale.set(0.2, 0.2, 0.2);
-  obj.position.set(-160, 0, -160);
-  scene.add(obj);
-});
-
-// const streetLamp4Light = new THREE.PointLight(0xffff99, 1.5);
-// streetLamp4Light.castShadow = true;
-// streetLamp4Light.position.set(-150, 70, -150);
-// streetLamp4Light.distance = 300;
-// scene.add(streetLamp4Light);
-
-// 8. Cactus
+// 7. Cactus pot
 var cactus = new Cactus();
 cactus.then((obj) => {
   obj.scale.set(0.05, 0.05, 0.05);
@@ -219,30 +188,69 @@ cactus.then((obj) => {
   scene.add(obj);
 });
 
-// 9. Grass
-var grass = new Grass();
-grass.then((obj) => {
-  obj.scale.set(0.3, 0.3, 0.3);
-  // scene.add(obj);
+// 8. PalmTree
+var palmTree1a = new PalmTree1();
+palmTree1a.then((obj) => {
+  obj.scale.set(0.2, 0.2, 0.2);
+  obj.position.set(130, 0, 130);
+  scene.add(obj);
 });
+
+var palmTree1b = new PalmTree1();
+palmTree1b.then((obj) => {
+  obj.scale.set(0.2, 0.2, 0.2);
+  obj.position.set(-130, 0, 130);
+  scene.add(obj);
+});
+
+for (let i = 0; i < 5; i++) {
+  let palmTree = new PalmTree2();
+  palmTree.then((obj) => {
+    obj.scale.set(0.2, 0.2, 0.2);
+    obj.position.set(-120 + 60 * i, 0, -130);
+    scene.add(obj);
+  });
+}
+
+// 9. FLying Saucer
+var flyingSaucer = new FlyingSaucer();
+flyingSaucer.then((obj) => {
+  obj.scale.set(0.3, 0.3, 0.3);
+  obj.position.set(90, 0, -70);
+  scene.add(obj);
+});
+
+var UFOLightTarget = new THREE.Object3D();
+UFOLightTarget.position.set(90, 0, -70);
+scene.add(UFOLightTarget);
+
+var UFOLightBottom = new THREE.SpotLight(0xdc143c, 10, 100, 90, 1);
+UFOLightBottom.position.set(90, 60, -70);
+UFOLightBottom.target = UFOLightTarget;
+
+var UFOLightTop = new THREE.SpotLight(0xdc143c, 5, 100, 90, 1);
+UFOLightTop.position.set(90, 110, -70);
+UFOLightTop.target = UFOLightTarget;
 
 // Test
 
 // EVENT (Keyboard, mouse, etc.)
 
-// var activeMode = 1;
-// document.addEventListener("keydown", onDocumentKeyDown, false);
-// function onDocumentKeyDown(event) {
-//   var keyCode = event.which;
-//   if (keyCode == 49) {
-//     //1: day
-//     activeMode = 1;
-//   } else if (keyCode == 50) {
-//     //2: night
-//     activeMode = 2;
-//   }
-//   render();
-// }
+var isNight = false;
+document.addEventListener(
+  "keydown",
+  (e) => {
+    var keyCode = e.which;
+    if (keyCode == 49) {
+      //1: day
+      isNight = false;
+    } else if (keyCode == 50) {
+      //2: night
+      isNight = true;
+    }
+  },
+  false
+);
 
 // RENDER
 function render(time) {
@@ -314,6 +322,49 @@ function render(time) {
         }
       }
     }
+  }
+
+  // UFO
+  flyingSaucer.then((obj) => {
+    if (isNight) {
+      if (obj.position.y < 80) {
+        obj.position.y += 0.5;
+        scene.add(UFOLightBottom);
+        scene.add(UFOLightTop);
+      } else {
+        obj.position.y = 80;
+      }
+    } else {
+      if (obj.position.y > 0) {
+        obj.position.y -= 0.5;
+      } else {
+        obj.position.y = 0;
+        scene.remove(UFOLightBottom);
+        scene.remove(UFOLightTop);
+      }
+    }
+  });
+
+  // Car
+  if (isNight) {
+    scene.add(headlights);
+  } else {
+    scene.remove(headlights);
+  }
+
+  // Street lamps and world light
+  if (isNight) {
+    streetLampLight.forEach((lamp) => {
+      scene.add(lamp);
+      scene.remove(light);
+      scene.remove(light2);
+    });
+  } else {
+    streetLampLight.forEach((lamp) => {
+      scene.remove(lamp);
+      scene.add(light);
+      scene.add(light2);
+    });
   }
 
   // Render camera
