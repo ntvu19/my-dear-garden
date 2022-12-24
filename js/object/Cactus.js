@@ -14,6 +14,7 @@ var Cactus = function () {
         root.traverse(function (child) {
           if (child instanceof Mesh) {
             child.castShadow = true;
+            child.receiveShadow = true;
           }
         });
         resolve(root);

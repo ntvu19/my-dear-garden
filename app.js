@@ -20,9 +20,9 @@ const textureLoader = new THREE.TextureLoader();
 
 // SCENE
 const scene = new THREE.Scene();
-textureLoader.load("./assets/sky.jpg", function (texture) {
-  scene.background = texture;
-});
+// textureLoader.load("./assets/sky.jpg", function (texture) {
+//   scene.background = texture;
+// });
 
 // CAMERA
 const fov = 60;
@@ -30,8 +30,6 @@ const aspect = window.innerWidth / window.innerHeight;
 const near = 1;
 const far = 2000;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-camera.castShadow = true;
-camera.receiveShadow = true;
 camera.position.set(0, 200, 300);
 camera.lookAt(0, 0, 0);
 
@@ -91,7 +89,7 @@ scene.add(car.mesh);
 //Car light at night
 
 var lightTarget = new THREE.Object3D();
-lightTarget.position.set(0, 4, 200);
+lightTarget.position.set(200, 4, 200);
 scene.add(lightTarget);
 
 const headlights = new THREE.SpotLight(0xffffcc, 10, 100, 50);
@@ -168,11 +166,11 @@ streetLamp1.then((obj) => {
   scene.add(obj);
 });
 
-const pointLight1 = new THREE.PointLight(0xffff99, 1.5);
-pointLight1.castShadow = true;
-pointLight1.position.set(-150, 70, 150);
-pointLight1.distance = 300;
-// scene.add(pointLight1);
+// const streetLamp1Light = new THREE.PointLight(0xffff99, 1.5);
+// streetLamp1Light.castShadow = true;
+// streetLamp1Light.position.set(-150, 70, 150);
+// streetLamp1Light.distance = 300;
+// scene.add(streetLamp1Light);
 
 var streetLamp2 = new StreetLamp();
 streetLamp2.then((obj) => {
@@ -181,11 +179,11 @@ streetLamp2.then((obj) => {
   scene.add(obj);
 });
 
-const pointLight2 = new THREE.PointLight(0xffff99, 1.5);
-pointLight2.castShadow = true;
-pointLight2.position.set(150, 70, -150);
-pointLight2.distance = 300;
-// scene.add(pointLight2);
+// const streetLamp2Light = new THREE.PointLight(0xffff99, 1.5);
+// streetLamp2Light.castShadow = true;
+// streetLamp2Light.position.set(150, 70, -150);
+// streetLamp2Light.distance = 300;
+// scene.add(streetLamp2Light);
 
 var streetLamp3 = new StreetLamp();
 streetLamp3.then((obj) => {
@@ -194,11 +192,11 @@ streetLamp3.then((obj) => {
   scene.add(obj);
 });
 
-const pointLight3 = new THREE.PointLight(0xffff99, 1.5);
-pointLight3.castShadow = true;
-pointLight3.position.set(150, 70, 150);
-pointLight3.distance = 300;
-// scene.add(pointLight3);
+// const streetLamp3Light = new THREE.PointLight(0xffff99, 1.5);
+// streetLamp3Light.castShadow = true;
+// streetLamp3Light.position.set(150, 70, 150);
+// streetLamp3Light.distance = 300;
+// scene.add(streetLamp3Light);
 
 var streetLamp4 = new StreetLamp();
 streetLamp4.then((obj) => {
@@ -207,11 +205,11 @@ streetLamp4.then((obj) => {
   scene.add(obj);
 });
 
-const pointLight4 = new THREE.PointLight(0xffff99, 1.5);
-pointLight4.castShadow = true;
-pointLight4.position.set(-150, 70, -150);
-pointLight4.distance = 300;
-// scene.add(pointLight4);
+// const streetLamp4Light = new THREE.PointLight(0xffff99, 1.5);
+// streetLamp4Light.castShadow = true;
+// streetLamp4Light.position.set(-150, 70, -150);
+// streetLamp4Light.distance = 300;
+// scene.add(streetLamp4Light);
 
 // 8. Cactus
 var cactus = new Cactus();
@@ -248,18 +246,74 @@ grass.then((obj) => {
 
 // RENDER
 function render(time) {
+  // Milisecond (ms) -> Second (s)
   time *= 0.001;
 
   // Animation for all object
+  // Car animation
+  if (car.mesh.position.z == 200) {
+    // At the bottom-left corner
+    if (car.mesh.position.x < 200) {
+      // Car position
+      car.mesh.position.x += 1;
+      headlights.position.x += 1;
 
-  car.mesh.position.x += 1;
-  headlights.position.x += 1;
-  lightTarget.position.x += 1;
+      // Direction of light
+      lightTarget.position.x = 200;
+    } else {
+      // Reach the bottom-right corner
+      // Rotate 90 degrees
+      car.mesh.rotateY(Math.PI / 2);
 
-  if (car.mesh.position.x > 200) {
-    headlights.position.x = -190;
-    lightTarget.position.x = 190;
-    car.mesh.position.x = -200;
+      // Change direction of light
+      lightTarget.position.z = -200;
+
+      // Change position of car
+      car.mesh.position.z -= 1;
+    }
+  } else if (car.mesh.position.z < 200) {
+    if (car.mesh.position.x == 200) {
+      if (car.mesh.position.z > -200) {
+        // Car position
+        car.mesh.position.z -= 1;
+        headlights.position.z -= 1;
+      } else if (car.mesh.position.z == -200) {
+        // Reach the top-right corner
+        // Rotate 90 degrees
+        car.mesh.rotateY(Math.PI / 2);
+
+        // Change direction of light
+        lightTarget.position.x = -200;
+
+        car.mesh.position.x -= 1;
+      }
+    } else {
+      if (car.mesh.position.z == -200) {
+        if (car.mesh.position.x > -200) {
+          // Car position
+          car.mesh.position.x -= 1;
+          headlights.position.x -= 1;
+        } else {
+          // Rotate 90 degrees
+          car.mesh.rotateY(Math.PI / 2);
+
+          // Change direction of light
+          lightTarget.position.z = 200;
+
+          car.mesh.position.z += 1;
+        }
+      } else {
+        // Reach the top-left corner
+        // Car position
+        car.mesh.position.z += 1;
+        headlights.position.z += 1;
+
+        if (car.mesh.position.z == 200) {
+          // Rotate 90 degrees
+          car.mesh.rotateY(Math.PI / 2);
+        }
+      }
+    }
   }
 
   // Render camera
