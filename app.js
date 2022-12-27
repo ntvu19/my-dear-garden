@@ -93,9 +93,13 @@ scene.add(lightTarget);
 
 const headlights = new THREE.SpotLight(0xffffcc, 10, 100, 50);
 headlights.castShadow = true;
-headlights.position.set(-200, 4, 200);
+headlights.position.set(-200, 6, 200);
 headlights.target = lightTarget;
-// scene.add(headlights);
+
+// Camera for car
+var carCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+carCamera.position.set(-200, 24, 200);
+carCamera.lookAt(210, 24, 200);
 
 // 3. Tree
 var tree = new Tree();
@@ -232,21 +236,22 @@ var UFOLightTop = new THREE.SpotLight(0xdc143c, 5, 100, 90, 1);
 UFOLightTop.position.set(90, 110, -70);
 UFOLightTop.target = UFOLightTarget;
 
-// Test
-
 // EVENT (Keyboard, mouse, etc.)
-
 var isNight = false;
+var isWorldCamera = true;
 document.addEventListener(
   "keydown",
   (e) => {
-    var keyCode = e.which;
-    if (keyCode == 49) {
-      //1: day
+    var keyCode = e.code;
+    if (keyCode == "Digit1") {
+      //Digit1: day
       isNight = false;
-    } else if (keyCode == 50) {
-      //2: night
+    } else if (keyCode == "Digit2") {
+      //Digit2: night
       isNight = true;
+    } else if (keyCode == "Space") {
+      // Space: Change camera
+      isWorldCamera = !isWorldCamera;
     }
   },
   false
@@ -265,6 +270,12 @@ function render(time) {
       // Car position
       car.mesh.position.x += 1;
       headlights.position.x += 1;
+      carCamera.position.x += 1;
+
+      let i = carCamera.position.x;
+      if (i >= 150) {
+        carCamera.lookAt(200, 24, 350 - i);
+      }
 
       // Direction of light
       lightTarget.position.x = 200;
@@ -273,8 +284,9 @@ function render(time) {
       // Rotate 90 degrees
       car.mesh.rotateY(Math.PI / 2);
 
-      // Change direction of light
+      // Change direction of light and target of camera of car
       lightTarget.position.z = -200;
+      carCamera.lookAt(200, 24, -210);
 
       // Change position of car
       car.mesh.position.z -= 1;
@@ -285,13 +297,20 @@ function render(time) {
         // Car position
         car.mesh.position.z -= 1;
         headlights.position.z -= 1;
+        carCamera.position.z -= 1;
+
+        let i = carCamera.position.z;
+        if (i <= -150) {
+          carCamera.lookAt(350 + i, 24, -200);
+        }
       } else if (car.mesh.position.z == -200) {
         // Reach the top-right corner
         // Rotate 90 degrees
         car.mesh.rotateY(Math.PI / 2);
 
-        // Change direction of light
+        // Change direction of light and target of camera of car
         lightTarget.position.x = -200;
+        carCamera.lookAt(-210, 24, -200);
 
         car.mesh.position.x -= 1;
       }
@@ -301,12 +320,19 @@ function render(time) {
           // Car position
           car.mesh.position.x -= 1;
           headlights.position.x -= 1;
+          carCamera.position.x -= 1;
+
+          let i = carCamera.position.x;
+          if (i <= -150) {
+            carCamera.lookAt(-200, 24, -350 - i);
+          }
         } else {
           // Rotate 90 degrees
           car.mesh.rotateY(Math.PI / 2);
 
-          // Change direction of light
+          // Change direction of light and target of camera of car
           lightTarget.position.z = 200;
+          carCamera.lookAt(-200, 24, 210);
 
           car.mesh.position.z += 1;
         }
@@ -315,10 +341,17 @@ function render(time) {
         // Car position
         car.mesh.position.z += 1;
         headlights.position.z += 1;
+        carCamera.position.z += 1;
+
+        let i = carCamera.position.z;
+        if (i >= 150) {
+          carCamera.lookAt(i - 350, 24, 200);
+        }
 
         if (car.mesh.position.z == 200) {
           // Rotate 90 degrees
           car.mesh.rotateY(Math.PI / 2);
+          carCamera.lookAt(210, 24, 200);
         }
       }
     }
@@ -368,7 +401,11 @@ function render(time) {
   }
 
   // Render camera
-  renderer.render(scene, camera);
+  if (isWorldCamera) {
+    renderer.render(scene, camera);
+  } else {
+    renderer.render(scene, carCamera);
+  }
 
   // Call the loop function again
   requestAnimationFrame(render);
