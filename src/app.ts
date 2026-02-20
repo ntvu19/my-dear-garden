@@ -1,27 +1,23 @@
 import * as THREE from "three";
-import { Road } from "./js/object/Road.js";
-import { Fence } from "./js/object/Fence.js";
-import { OrbitControls } from "./js/OrbitControls.js";
-import { Car } from "./js/object/Car.js";
-import { House } from "./js/object/House.js";
-import { Cactus } from "./js/object/Cactus.js";
-import { StreetLamp } from "./js/object/StreetLamp.js";
-import { Tree } from "./js/object/Tree.js";
-import { FlyingSaucer } from "./js/object/FlyingSaucer.js";
-import { PalmTree1, PalmTree2 } from "./js/object/PalmTree.js";
+import { Road } from "./object/Road";
+import { Fence } from "./object/Fence";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { Car } from "./object/Car";
+import { House } from "./object/House";
+import { Cactus } from "./object/Cactus";
+import { StreetLamp } from "./object/StreetLamp";
+import { Tree } from "./object/Tree";
+import { FlyingSaucer } from "./object/FlyingSaucer";
+import { PalmTree1, PalmTree2 } from "./object/PalmTree";
 
 // RENDERER
-const canvas = document.querySelector("#c");
+const canvas = document.querySelector<HTMLCanvasElement>("#c")!;
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.shadowMap.enabled = true;
 renderer.setSize(window.innerWidth, window.innerHeight);
-const textureLoader = new THREE.TextureLoader();
 
 // SCENE
 const scene = new THREE.Scene();
-// textureLoader.load("./assets/sky.jpg", function (texture) {
-//   scene.background = texture;
-// });
 
 // CAMERA
 const fov = 60;
@@ -48,46 +44,45 @@ scene.add(light2);
 // DRAW
 
 // 1. Surface
-var geometry = new THREE.PlaneGeometry(500, 500);
-var material = new THREE.MeshLambertMaterial({
+const geometry = new THREE.PlaneGeometry(500, 500);
+const material = new THREE.MeshLambertMaterial({
   color: 0x348c31,
   side: THREE.DoubleSide,
 });
-var plane = new THREE.Mesh(geometry, material);
+const plane = new THREE.Mesh(geometry, material);
 plane.receiveShadow = true;
 plane.rotateX(-Math.PI / 2);
 scene.add(plane);
 
 // 2. Road
 {
-  var road1 = new Road();
+  const road1 = new Road();
   road1.mesh.position.z = 200;
   scene.add(road1.mesh);
 
-  var road2 = new Road();
+  const road2 = new Road();
   road2.mesh.position.z = -200;
   scene.add(road2.mesh);
 
-  var road3 = new Road();
+  const road3 = new Road();
   road3.mesh.rotateY(Math.PI / 2);
   road3.mesh.position.x = 200;
   scene.add(road3.mesh);
 
-  var road4 = new Road();
+  const road4 = new Road();
   road4.mesh.rotateY(Math.PI / 2);
   road4.mesh.position.x = -200;
   scene.add(road4.mesh);
 }
 
 // 2. Car
-var car = new Car();
+const car = new Car();
 car.mesh.scale.set(0.5, 0.5, 0.5);
 car.mesh.position.set(-200, 4, 200);
 scene.add(car.mesh);
 
-//Car light at night
-
-var lightTarget = new THREE.Object3D();
+// Car light at night
+const lightTarget = new THREE.Object3D();
 lightTarget.position.set(200, 4, 200);
 scene.add(lightTarget);
 
@@ -97,12 +92,12 @@ headlights.position.set(-200, 6, 200);
 headlights.target = lightTarget;
 
 // Camera for car
-var carCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+const carCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 carCamera.position.set(-200, 24, 200);
 carCamera.lookAt(210, 24, 200);
 
 // 3. Tree
-var tree = new Tree();
+const tree = Tree();
 tree.then((obj) => {
   obj.castShadow = true;
   obj.receiveShadow = true;
@@ -111,18 +106,18 @@ tree.then((obj) => {
   scene.add(obj);
 });
 
-//4. House
-var house = new House();
+// 4. House
+const house = House();
 house.then((obj) => {
   obj.castShadow = true;
   obj.receiveShadow = true;
   scene.add(obj);
 });
 
-//5. Fence
+// 5. Fence
 // Left
 for (let i = 0; i < 10; i++) {
-  let fence = new Fence();
+  const fence = new Fence();
   fence.mesh.scale.set(10, 10, 10);
   fence.mesh.position.set(-150, 0, -140 + 30 * i);
   scene.add(fence.mesh);
@@ -130,7 +125,7 @@ for (let i = 0; i < 10; i++) {
 
 // Right
 for (let i = 0; i < 10; i++) {
-  let fence = new Fence();
+  const fence = new Fence();
   fence.mesh.scale.set(10, 10, 10);
   fence.mesh.position.set(150, 0, -140 + 30 * i);
   scene.add(fence.mesh);
@@ -138,7 +133,7 @@ for (let i = 0; i < 10; i++) {
 
 // Behind
 for (let i = 0; i < 10; i++) {
-  let fence = new Fence();
+  const fence = new Fence();
   fence.mesh.scale.set(10, 10, 10);
   fence.mesh.rotateY(Math.PI / 2);
   fence.mesh.position.set(-140 + 30 * i, 0, -150);
@@ -150,7 +145,7 @@ for (let i = 0; i < 10; i++) {
   if (i == 4 || i == 5) {
     continue;
   }
-  let fence = new Fence();
+  const fence = new Fence();
   fence.mesh.scale.set(10, 10, 10);
   fence.mesh.rotateY(Math.PI / 2);
   fence.mesh.position.set(-140 + 30 * i, 0, 150);
@@ -158,16 +153,16 @@ for (let i = 0; i < 10; i++) {
 }
 
 // 6. StreetLamp
-var streetLampTemp = [
+const streetLampTemp: [number, number][] = [
   [-1, 1],
   [1, -1],
   [1, 1],
   [-1, -1],
 ];
-var streetLampLight = [];
+const streetLampLight: THREE.PointLight[] = [];
 
 streetLampTemp.forEach((el) => {
-  let streetLamp = new StreetLamp();
+  const streetLamp = StreetLamp();
   streetLamp.then((obj) => {
     obj.castShadow = true;
     obj.scale.set(0.2, 0.2, 0.2);
@@ -177,7 +172,7 @@ streetLampTemp.forEach((el) => {
 });
 
 streetLampTemp.forEach((el) => {
-  let _streetLampLight = new THREE.PointLight(0xffff99, 1.5);
+  const _streetLampLight = new THREE.PointLight(0xffff99, 1.5);
   _streetLampLight.castShadow = true;
   _streetLampLight.position.set(150 * el[0], 70, 150 * el[1]);
   _streetLampLight.distance = 300;
@@ -185,7 +180,7 @@ streetLampTemp.forEach((el) => {
 });
 
 // 7. Cactus pot
-var cactus = new Cactus();
+const cactus = Cactus();
 cactus.then((obj) => {
   obj.scale.set(0.05, 0.05, 0.05);
   obj.position.set(-30, 0, 20);
@@ -193,14 +188,14 @@ cactus.then((obj) => {
 });
 
 // 8. PalmTree
-var palmTree1a = new PalmTree1();
+const palmTree1a = PalmTree1();
 palmTree1a.then((obj) => {
   obj.scale.set(0.2, 0.2, 0.2);
   obj.position.set(130, 0, 130);
   scene.add(obj);
 });
 
-var palmTree1b = new PalmTree1();
+const palmTree1b = PalmTree1();
 palmTree1b.then((obj) => {
   obj.scale.set(0.2, 0.2, 0.2);
   obj.position.set(-130, 0, 130);
@@ -208,7 +203,7 @@ palmTree1b.then((obj) => {
 });
 
 for (let i = 0; i < 5; i++) {
-  let palmTree = new PalmTree2();
+  const palmTree = PalmTree2();
   palmTree.then((obj) => {
     obj.scale.set(0.2, 0.2, 0.2);
     obj.position.set(-120 + 60 * i, 0, -130);
@@ -216,41 +211,38 @@ for (let i = 0; i < 5; i++) {
   });
 }
 
-// 9. FLying Saucer
-var flyingSaucer = new FlyingSaucer();
+// 9. Flying Saucer
+const flyingSaucer = FlyingSaucer();
 flyingSaucer.then((obj) => {
   obj.scale.set(0.3, 0.3, 0.3);
   obj.position.set(90, 0, -70);
   scene.add(obj);
 });
 
-var UFOLightTarget = new THREE.Object3D();
+const UFOLightTarget = new THREE.Object3D();
 UFOLightTarget.position.set(90, 0, -70);
 scene.add(UFOLightTarget);
 
-var UFOLightBottom = new THREE.SpotLight(0xdc143c, 10, 100, 90, 1);
+const UFOLightBottom = new THREE.SpotLight(0xdc143c, 10, 100, 90, 1);
 UFOLightBottom.position.set(90, 60, -70);
 UFOLightBottom.target = UFOLightTarget;
 
-var UFOLightTop = new THREE.SpotLight(0xdc143c, 5, 100, 90, 1);
+const UFOLightTop = new THREE.SpotLight(0xdc143c, 5, 100, 90, 1);
 UFOLightTop.position.set(90, 110, -70);
 UFOLightTop.target = UFOLightTarget;
 
 // EVENT (Keyboard, mouse, etc.)
-var isNight = false;
-var isWorldCamera = true;
+let isNight = false;
+let isWorldCamera = true;
 document.addEventListener(
   "keydown",
   (e) => {
-    var keyCode = e.code;
+    const keyCode = e.code;
     if (keyCode == "Digit1") {
-      //Digit1: day
       isNight = false;
     } else if (keyCode == "Digit2") {
-      //Digit2: night
       isNight = true;
     } else if (keyCode == "Space") {
-      // Space: Change camera
       isWorldCamera = !isWorldCamera;
     }
   },
@@ -258,57 +250,44 @@ document.addEventListener(
 );
 
 // RENDER
-function render(time) {
-  // Milisecond (ms) -> Second (s)
+function render(time: number): void {
   time *= 0.001;
 
-  // Animation for all object
   // Car animation
   if (car.mesh.position.z == 200) {
-    // At the bottom-left corner
     if (car.mesh.position.x < 200) {
-      // Car position
       car.mesh.position.x += 1;
       headlights.position.x += 1;
       carCamera.position.x += 1;
 
-      let i = carCamera.position.x;
+      const i = carCamera.position.x;
       if (i >= 150) {
         carCamera.lookAt(200, 24, 350 - i);
       }
 
-      // Direction of light
       lightTarget.position.x = 200;
     } else {
-      // Reach the bottom-right corner
-      // Rotate 90 degrees
       car.mesh.rotateY(Math.PI / 2);
 
-      // Change direction of light and target of camera of car
       lightTarget.position.z = -200;
       carCamera.lookAt(200, 24, -210);
 
-      // Change position of car
       car.mesh.position.z -= 1;
     }
   } else if (car.mesh.position.z < 200) {
     if (car.mesh.position.x == 200) {
       if (car.mesh.position.z > -200) {
-        // Car position
         car.mesh.position.z -= 1;
         headlights.position.z -= 1;
         carCamera.position.z -= 1;
 
-        let i = carCamera.position.z;
+        const i = carCamera.position.z;
         if (i <= -150) {
           carCamera.lookAt(350 + i, 24, -200);
         }
       } else if (car.mesh.position.z == -200) {
-        // Reach the top-right corner
-        // Rotate 90 degrees
         car.mesh.rotateY(Math.PI / 2);
 
-        // Change direction of light and target of camera of car
         lightTarget.position.x = -200;
         carCamera.lookAt(-210, 24, -200);
 
@@ -317,39 +296,33 @@ function render(time) {
     } else {
       if (car.mesh.position.z == -200) {
         if (car.mesh.position.x > -200) {
-          // Car position
           car.mesh.position.x -= 1;
           headlights.position.x -= 1;
           carCamera.position.x -= 1;
 
-          let i = carCamera.position.x;
+          const i = carCamera.position.x;
           if (i <= -150) {
             carCamera.lookAt(-200, 24, -350 - i);
           }
         } else {
-          // Rotate 90 degrees
           car.mesh.rotateY(Math.PI / 2);
 
-          // Change direction of light and target of camera of car
           lightTarget.position.z = 200;
           carCamera.lookAt(-200, 24, 210);
 
           car.mesh.position.z += 1;
         }
       } else {
-        // Reach the top-left corner
-        // Car position
         car.mesh.position.z += 1;
         headlights.position.z += 1;
         carCamera.position.z += 1;
 
-        let i = carCamera.position.z;
+        const i = carCamera.position.z;
         if (i >= 150) {
           carCamera.lookAt(i - 350, 24, 200);
         }
 
         if (car.mesh.position.z == 200) {
-          // Rotate 90 degrees
           car.mesh.rotateY(Math.PI / 2);
           carCamera.lookAt(210, 24, 200);
         }
@@ -407,7 +380,6 @@ function render(time) {
     renderer.render(scene, carCamera);
   }
 
-  // Call the loop function again
   requestAnimationFrame(render);
 }
 requestAnimationFrame(render);
