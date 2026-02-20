@@ -96,25 +96,7 @@ const carCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 carCamera.position.set(-200, 24, 200);
 carCamera.lookAt(210, 24, 200);
 
-// 3. Tree
-const tree = Tree();
-tree.then((obj) => {
-  obj.castShadow = true;
-  obj.receiveShadow = true;
-  obj.scale.set(0.8, 0.8, 0.8);
-  obj.position.set(-80, 0, 50);
-  scene.add(obj);
-});
-
-// 4. House
-const house = House();
-house.then((obj) => {
-  obj.castShadow = true;
-  obj.receiveShadow = true;
-  scene.add(obj);
-});
-
-// 5. Fence
+// 3. Fence
 // Left
 for (let i = 0; i < 10; i++) {
   const fence = new Fence();
@@ -152,7 +134,7 @@ for (let i = 0; i < 10; i++) {
   scene.add(fence.mesh);
 }
 
-// 6. StreetLamp
+// 4. StreetLamp lights
 const streetLampTemp: [number, number][] = [
   [-1, 1],
   [1, -1],
@@ -162,16 +144,6 @@ const streetLampTemp: [number, number][] = [
 const streetLampLight: THREE.PointLight[] = [];
 
 streetLampTemp.forEach((el) => {
-  const streetLamp = StreetLamp();
-  streetLamp.then((obj) => {
-    obj.castShadow = true;
-    obj.scale.set(0.2, 0.2, 0.2);
-    obj.position.set(160 * el[0], 0, 160 * el[1]);
-    scene.add(obj);
-  });
-});
-
-streetLampTemp.forEach((el) => {
   const _streetLampLight = new THREE.PointLight(0xffff99, 1.5);
   _streetLampLight.castShadow = true;
   _streetLampLight.position.set(150 * el[0], 70, 150 * el[1]);
@@ -179,46 +151,7 @@ streetLampTemp.forEach((el) => {
   streetLampLight.push(_streetLampLight);
 });
 
-// 7. Cactus pot
-const cactus = Cactus();
-cactus.then((obj) => {
-  obj.scale.set(0.05, 0.05, 0.05);
-  obj.position.set(-30, 0, 20);
-  scene.add(obj);
-});
-
-// 8. PalmTree
-const palmTree1a = PalmTree1();
-palmTree1a.then((obj) => {
-  obj.scale.set(0.2, 0.2, 0.2);
-  obj.position.set(130, 0, 130);
-  scene.add(obj);
-});
-
-const palmTree1b = PalmTree1();
-palmTree1b.then((obj) => {
-  obj.scale.set(0.2, 0.2, 0.2);
-  obj.position.set(-130, 0, 130);
-  scene.add(obj);
-});
-
-for (let i = 0; i < 5; i++) {
-  const palmTree = PalmTree2();
-  palmTree.then((obj) => {
-    obj.scale.set(0.2, 0.2, 0.2);
-    obj.position.set(-120 + 60 * i, 0, -130);
-    scene.add(obj);
-  });
-}
-
-// 9. Flying Saucer
-const flyingSaucer = FlyingSaucer();
-flyingSaucer.then((obj) => {
-  obj.scale.set(0.3, 0.3, 0.3);
-  obj.position.set(90, 0, -70);
-  scene.add(obj);
-});
-
+// 5. UFO lights
 const UFOLightTarget = new THREE.Object3D();
 UFOLightTarget.position.set(90, 0, -70);
 scene.add(UFOLightTarget);
@@ -230,6 +163,71 @@ UFOLightBottom.target = UFOLightTarget;
 const UFOLightTop = new THREE.SpotLight(0xdc143c, 5, 100, 90, 1);
 UFOLightTop.position.set(90, 110, -70);
 UFOLightTop.target = UFOLightTarget;
+
+// 6. Load all async objects in parallel
+let flyingSaucerObj: THREE.Group | null = null;
+
+(async () => {
+  const [
+    treeObj,
+    houseObj,
+    streetLampObjs,
+    cactusObj,
+    palmTree1aObj,
+    palmTree1bObj,
+    palmTree2Objs,
+    saucerObj,
+  ] = await Promise.all([
+    Tree(),
+    House(),
+    Promise.all(streetLampTemp.map(() => StreetLamp())),
+    Cactus(),
+    PalmTree1(),
+    PalmTree1(),
+    Promise.all(Array.from({ length: 5 }, () => PalmTree2())),
+    FlyingSaucer(),
+  ]);
+
+  treeObj.castShadow = true;
+  treeObj.receiveShadow = true;
+  treeObj.scale.set(0.8, 0.8, 0.8);
+  treeObj.position.set(-80, 0, 50);
+  scene.add(treeObj);
+
+  houseObj.castShadow = true;
+  houseObj.receiveShadow = true;
+  scene.add(houseObj);
+
+  streetLampObjs.forEach((obj, i) => {
+    obj.castShadow = true;
+    obj.scale.set(0.2, 0.2, 0.2);
+    obj.position.set(160 * streetLampTemp[i][0], 0, 160 * streetLampTemp[i][1]);
+    scene.add(obj);
+  });
+
+  cactusObj.scale.set(0.05, 0.05, 0.05);
+  cactusObj.position.set(-30, 0, 20);
+  scene.add(cactusObj);
+
+  palmTree1aObj.scale.set(0.2, 0.2, 0.2);
+  palmTree1aObj.position.set(130, 0, 130);
+  scene.add(palmTree1aObj);
+
+  palmTree1bObj.scale.set(0.2, 0.2, 0.2);
+  palmTree1bObj.position.set(-130, 0, 130);
+  scene.add(palmTree1bObj);
+
+  palmTree2Objs.forEach((obj, i) => {
+    obj.scale.set(0.2, 0.2, 0.2);
+    obj.position.set(-120 + 60 * i, 0, -130);
+    scene.add(obj);
+  });
+
+  saucerObj.scale.set(0.3, 0.3, 0.3);
+  saucerObj.position.set(90, 0, -70);
+  scene.add(saucerObj);
+  flyingSaucerObj = saucerObj;
+})();
 
 // EVENT (Keyboard, mouse, etc.)
 let isNight = false;
@@ -331,25 +329,25 @@ function render(time: number): void {
   }
 
   // UFO
-  flyingSaucer.then((obj) => {
+  if (flyingSaucerObj) {
     if (isNight) {
-      if (obj.position.y < 80) {
-        obj.position.y += 0.5;
+      if (flyingSaucerObj.position.y < 80) {
+        flyingSaucerObj.position.y += 0.5;
         scene.add(UFOLightBottom);
         scene.add(UFOLightTop);
       } else {
-        obj.position.y = 80;
+        flyingSaucerObj.position.y = 80;
       }
     } else {
-      if (obj.position.y > 0) {
-        obj.position.y -= 0.5;
+      if (flyingSaucerObj.position.y > 0) {
+        flyingSaucerObj.position.y -= 0.5;
       } else {
-        obj.position.y = 0;
+        flyingSaucerObj.position.y = 0;
         scene.remove(UFOLightBottom);
         scene.remove(UFOLightTop);
       }
     }
-  });
+  }
 
   // Car
   if (isNight) {
